@@ -1,0 +1,82 @@
+/* ══ fixes.css — cargar DESPUÉS de tulips.css ══ */
+
+/* Bug: "left: vmin" inválido */
+.tulips-container .flower__g-fr { left: 1vmin; }
+
+/* Planta rosada del centro fuera; hojas largas del centro más hacia el medio */
+.tulips-container .grass-center .flower__g-fr { display: none; }
+.tulips-container .grass-center .long-g { margin-left: -10vmin; }
+
+/* Contenedores de crecimiento: misma referencia antes/durante/después */
+.tulips-container .grass-cluster > .grow-ans,
+.tulips-container .grass-cluster > .growing-grass {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 100%;
+}
+
+/* Rendimiento: sin blur pesado */
+.tulips-container .flower__leafs::after {
+  width: 20vmin; height: 20vmin;
+  background: radial-gradient(circle, rgba(255,185,196,0.55) 0%, transparent 70%);
+  filter: none;
+}
+.tulips-container .flower__grass__overlay { display: none; }
+.tulips-container .long-g--6,
+.tulips-container .long-g--7,
+.tulips-container .flower__g-right--2 .leaf { filter: none; }
+
+.tulips-container .flower__grass--1,
+.tulips-container .flower__grass--2,
+.tulips-container .flower__g-long,
+.tulips-container .flower__g-right--1,
+.tulips-container .flower__g-right--2,
+.tulips-container .flower__g-front,
+.tulips-container .flower__g-fr,
+.tulips-container .long-g .leaf { animation-timing-function: ease-in-out; }
+
+.tulips-container .flower { will-change: transform; }
+
+.tulips-container.paused *,
+.tulips-container.paused *::before,
+.tulips-container.paused *::after { animation-play-state: paused !important; }
+
+/* ── TULIPANES: crecimiento suave (sin animar height) ── */
+.tulips-container .flower--1 { --h: 60vmin; --rd: 0.3s; --bd: 1.1s; animation: moving-flower-1 4s ease-in-out infinite; }
+.tulips-container .flower--2 { --h: 75vmin; --rd: 0.6s; --bd: 1.4s; animation: moving-flower-2 4s ease-in-out infinite; }
+.tulips-container .flower--3 { --h: 60vmin; --rd: 0.9s; --bd: 1.7s; animation: moving-flower-3 4s ease-in-out infinite; }
+
+.tulips-container .flower .flower__line {
+  animation: stem-reveal 2.8s cubic-bezier(.25,.6,.25,1) var(--rd) backwards;
+}
+@keyframes stem-reveal {
+  from { clip-path: inset(100% -20vmin 0 -20vmin); }
+  to   { clip-path: inset(0 -20vmin 0 -20vmin); }
+}
+.tulips-container .flower .flower__leafs {
+  animation:
+    blooming-flower 2s var(--bd) backwards,
+    flower-rise 2.8s cubic-bezier(.25,.6,.25,1) var(--rd) backwards;
+}
+@keyframes flower-rise {
+  from { translate: 0 var(--h); }
+  to   { translate: 0 0; }
+}
+
+/* ── PLANTAS: salen después de los tulipanes ── */
+.tulips-container { --plants-start: 3.5s; }
+.tulips-container .grass-cluster .grow-ans {
+  animation-duration: 1s;
+  animation-delay: calc(var(--d) * 0.25 + var(--plants-start));
+}
+.tulips-container .grass-cluster .growing-grass { animation-delay: var(--plants-start); }
+.tulips-container .grass-cluster .flower__grass__leaf,
+.tulips-container .grass-cluster .flower__g-front__leaf-wrapper,
+.tulips-container .grass-cluster .flower__g-fr__leaf {
+  animation-delay: calc(var(--plants-start) + 0.5s) !important;
+}
+
+/* ── HERO: sin backdrop-filter ni text-shadow pesado ── */
+.hero-badge  { backdrop-filter: none; background: rgba(255,255,255,0.88); }
+.mini-player { backdrop-filter: none; background: rgba(255,255,255,0.85); }
+.hero-name   { text-shadow: none; }
